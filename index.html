@@ -2,39 +2,53 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>EWS – Eisenbahnwerkstatt für die Schiene</title>
 
 <style>
+/* iPhone/Browser-Basics */
+*{ box-sizing:border-box; }
+html, body{ width:100%; }
+body{
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  background:#ffffff;
+  scroll-behavior:smooth;
+  color:#111;
+  overflow-x:hidden;                 /* verhindert iPhone “abgeschnitten” durch Overflow */
+  -webkit-text-size-adjust:100%;
+}
+
+/* ✅ Blau-Ton näher am Foto (Lok-Blau) */
 :root{
-  --ews-blue:#4b6b7a;
-  --ews-blue-dark:#36505c;
+  --ews-blue: #2F6FA3;               /* Hauptblau */
+  --ews-blue-dark: #23577F;          /* dunkler */
   --ews-slate:#2f3b43;
   --bg:#ffffff;
   --soft:#f3f6f8;
 }
 
-body{
-  margin:0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: var(--bg);
-  scroll-behavior:smooth;
-  color:#111;
-}
-
+/* Sticky Header + Safe Area */
 header{
   background: var(--ews-blue);
   color:white;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding: 15px 40px;
+
+  /* Safe-area + mobile friendly padding */
+  padding-top: calc(12px + env(safe-area-inset-top));
+  padding-bottom: 12px;
+  padding-left: calc(16px + env(safe-area-inset-left));
+  padding-right: calc(16px + env(safe-area-inset-right));
+
   position: sticky;
   top:0;
   z-index:1000;
   box-shadow: 0 8px 18px rgba(0,0,0,.12);
 }
 
+/* Logo */
 .logo{
   font-size: 26px;
   font-weight: bold;
@@ -43,25 +57,35 @@ header{
   padding: 6px 14px;
   border-radius: 6px;
   letter-spacing:.5px;
+  flex: 0 0 auto;
 }
 
+/* Navigation */
+nav{
+  display:flex;
+  flex-wrap:wrap;        /* ✅ bricht auf iPhone sauber um */
+  gap: 10px 14px;
+  justify-content:flex-end;
+}
 nav a{
   color:white;
   text-decoration:none;
-  margin-left: 18px;
   font-weight:bold;
   opacity:.95;
+  white-space:nowrap;
 }
 nav a:hover{opacity:1; text-decoration:underline;}
 
+/* Sections */
 section{
-  padding: 80px 15%;
+  /* ✅ responsive padding statt harter 15% (macht iPhone schnell “zu eng”) */
+  padding: 80px clamp(16px, 6vw, 120px);
 }
 
 .hero{
   background: linear-gradient(135deg, var(--soft) 0%, #ffffff 70%);
   text-align:center;
-  padding: 120px 20px;
+  padding: 110px clamp(16px, 6vw, 120px);
   border-bottom: 1px solid rgba(0,0,0,.06);
 }
 
@@ -69,37 +93,38 @@ section{
   display:inline-block;
   padding: 8px 14px;
   border-radius: 999px;
-  background: rgba(75,107,122,.12);
+  background: rgba(47,111,163,.14);
   color: var(--ews-blue-dark);
   font-weight: 800;
   margin-bottom: 14px;
 }
 
 .hero h1{
-  font-size: 52px;
+  font-size: clamp(34px, 5vw, 56px);
   margin: 0 0 10px;
   color: var(--ews-blue-dark);
 }
 
 .hero p{
-  font-size: 20px;
+  font-size: clamp(16px, 2vw, 20px);
   margin: 0 0 28px;
   color: #35444c;
 }
 
+/* Buttons */
 .button{
   background: var(--ews-blue);
   color:white;
   padding: 14px 30px;
   text-decoration:none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight:bold;
   display:inline-block;
   border: 2px solid transparent;
-  margin: 5px;
+  margin: 6px;
   transition: .15s transform, .15s filter;
 }
-.button:hover{transform: translateY(-1px); filter:brightness(1.04);}
+.button:hover{transform: translateY(-1px); filter:brightness(1.05);}
 
 .button.secondary{
   background: white;
@@ -107,61 +132,60 @@ section{
   border-color: var(--ews-blue);
 }
 
+/* Headings */
 h2{
   color: var(--ews-blue-dark);
   margin-bottom: 20px;
 }
 
+/* Cards */
 .card{
   background: var(--soft);
   padding: 20px;
   margin-bottom: 18px;
   border-left: 6px solid var(--ews-blue);
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0,0,0,.06);
 }
 
+/* Rules */
 .rules{
   background: var(--ews-blue-dark);
   color:white;
-  padding: 28px;
-  border-radius: 12px;
+  padding: 26px;
+  border-radius: 14px;
   box-shadow: 0 10px 24px rgba(0,0,0,.12);
 }
-
 .rules ul{
   margin: 12px 0 0;
   padding-left: 18px;
   line-height: 1.55;
 }
 
+/* Karriere */
 .jobs{
   display:grid;
   grid-template-columns: 1fr 1fr;
   gap: 18px;
 }
-
 .job{
   background: var(--soft);
   padding: 18px;
-  border-radius: 10px;
+  border-radius: 12px;
   border-left: 6px solid var(--ews-blue);
   box-shadow: 0 8px 20px rgba(0,0,0,.06);
 }
 
+/* Footer + Safe Area bottom */
 footer{
   background: var(--ews-slate);
   color:white;
   text-align:center;
-  padding: 30px;
+  padding: 26px calc(16px + env(safe-area-inset-left)) calc(26px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-right));
 }
 
+/* Mobile tweaks */
 @media (max-width: 900px){
-  header{padding: 12px 16px; flex-wrap:wrap;}
-  nav{width:100%; display:flex; flex-wrap:wrap; gap:12px;}
-  nav a{margin-left:0;}
-  section{padding: 70px 8%;}
-  .hero h1{font-size:40px;}
   .jobs{grid-template-columns:1fr;}
 }
 </style>
@@ -202,7 +226,7 @@ footer{
   </div>
 
   <div class="card">
-    Auch lange nach dem Wechsel der LB von <strong>Lowlights Bahn</strong> zu 
+    Auch lange nach dem Wechsel der LB von <strong>Lowlights Bahn</strong> zu
     <strong>LowlightBahn AG</strong> sorgt EWS dafür, dass alles weiterhin zuverlässig rollt.
   </div>
 </section>
